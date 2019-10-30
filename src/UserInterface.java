@@ -11,21 +11,37 @@ public class UserInterface {
 
     //Using Border Layout Manager
     private void createScreen() {
-        JFrame f=new JFrame();
+        JFrame f = new JFrame();
 
-        JButton b1=new JButton("NORTH");
-        JButton b2=new JButton("SOUTH");
-        JButton b3=new JButton("EAST");
-        JButton b4=new JButton("WEST");
-        JButton b5=new JButton("CENTER");
+        JLabel title = new JLabel("Snakes And Ladders");
 
-        f.add(b1, BorderLayout.NORTH);
-        f.add(b2,BorderLayout.SOUTH);
-        f.add(b3,BorderLayout.EAST);
-        f.add(b4,BorderLayout.WEST);
-        f.add(b5,BorderLayout.CENTER);
+        JButton restartBtn = new JButton("Restart");
 
-        f.setSize(600,600);
+        JButton rollDiceBtn = new JButton("Roll Dice");
+
+        JLabel noticeBoardLbl = new JLabel("Notice Board");
+
+        //Center
+        JScrollPane board = createBoard();
+
+        f.add(title, BorderLayout.NORTH);
+        f.add(restartBtn, BorderLayout.SOUTH);
+        f.add(rollDiceBtn, BorderLayout.EAST);
+        f.add(noticeBoardLbl, BorderLayout.WEST);
+        f.add(board, BorderLayout.CENTER);
+
+        f.setSize(600, 600);
         f.setVisible(true);
+    }
+
+    private JScrollPane createBoard() {
+        String data[][]={ {"101","Amit","670000"},
+                {"102","Jai","780000"},
+                {"101","Sachin","700000"}};
+        String column[]={"ID","NAME","SALARY"};
+        JTable jt=new JTable(data,column);
+        jt.setBounds(30,40,200,300);
+        JScrollPane sp = new JScrollPane(jt);
+        return sp;
     }
 }
