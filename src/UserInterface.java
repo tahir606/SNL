@@ -14,11 +14,8 @@ public class UserInterface {
         JFrame f = new JFrame();
 
         JLabel title = new JLabel("Snakes And Ladders");
-
         JButton restartBtn = new JButton("Restart");
-
         JButton rollDiceBtn = new JButton("Roll Dice");
-
         JLabel noticeBoardLbl = new JLabel("Notice Board");
 
         //Center
