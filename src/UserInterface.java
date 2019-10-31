@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class UserInterface {
 
@@ -19,7 +21,7 @@ public class UserInterface {
         JLabel noticeBoardLbl = new JLabel("Notice Board");
 
         //Center
-        JScrollPane board = createBoard();
+        JPanel board = createBoard();
 
         f.add(title, BorderLayout.NORTH);
         f.add(restartBtn, BorderLayout.SOUTH);
@@ -31,14 +33,50 @@ public class UserInterface {
         f.setVisible(true);
     }
 
-    private JScrollPane createBoard() {
-        String data[][]={ {"101","Amit","670000"},
-                {"102","Jai","780000"},
-                {"101","Sachin","700000"}};
-        String column[]={"ID","NAME","SALARY"};
-        JTable jt=new JTable(data,column);
-        jt.setBounds(30,40,200,300);
-        JScrollPane sp = new JScrollPane(jt);
-        return sp;
+    int row = 5, col = 6;
+    int matrix[][] = new int[row][col];
+
+    private JPanel createBoard() {
+        JPanel p = new JPanel();
+        p.setLayout(new GridLayout(row, col));
+
+        int i = 30;
+        for (int r = 0; r < row; r++) {
+            for (int c = 0; c < col; c++) {
+//                System.out.println("Row: " + r + " Col: " + c);
+                Tile tile = new Tile(r, c, matrix);
+                tile.setText(String.valueOf(i));
+                p.add(tile);
+                i--;
+            }
+        }
+        return p;
+    }
+
+    public static class Tile extends JButton {
+
+        private final int[][] fModel;
+        private final int fX;
+        private final int fY;
+
+        public Tile(final int x, final int y, final int[][] model) {
+            fX = x;
+            fY = y;
+            fModel = model;
+
+            addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    fModel[fX][fY] = fModel[fX][fY] == 1 ? 0 : 1;
+                    updateNameFromModel();
+                }
+            });
+            updateNameFromModel();
+        }
+
+        private void updateNameFromModel() {
+            setText(String.valueOf(fModel[fX][fY]));
+        }
+
     }
 }
