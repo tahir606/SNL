@@ -3,9 +3,18 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+//A Boundary Class which deals only with the User Interface
 public class UserInterface {
 
-    //A Boundary Class which deals only with the User Interface
+    public static int diceRoll = 0;
+    public static boolean diceClick = false;
+
+    private JFrame frame = new JFrame();
+
+    private JLabel noticeBoardLbl = new JLabel("Notice Board");
+    private JLabel title = new JLabel("Snakes And Ladders");
+    private JButton restartBtn = new JButton("Restart");
+    private JButton rollDiceBtn = new JButton("Roll Dice");
 
     public UserInterface() {
         createScreen();
@@ -13,24 +22,33 @@ public class UserInterface {
 
     //Using Border Layout Manager
     private void createScreen() {
-        JFrame f = new JFrame();
 
-        JLabel title = new JLabel("Snakes And Ladders");
-        JButton restartBtn = new JButton("Restart");
-        JButton rollDiceBtn = new JButton("Roll Dice");
-        JLabel noticeBoardLbl = new JLabel("Notice Board");
+        //Notice Board
+        noticeBoardLbl.setText("Notifications will be displayed here");
 
         //Center
         JPanel board = createBoard();
 
-        f.add(title, BorderLayout.NORTH);
-        f.add(restartBtn, BorderLayout.SOUTH);
-        f.add(rollDiceBtn, BorderLayout.EAST);
-        f.add(noticeBoardLbl, BorderLayout.WEST);
-        f.add(board, BorderLayout.CENTER);
+        //Roll Dice Btn
+        rollDiceBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                diceRoll = Dice.rollDice();
+                setNoticeBoardTxt("You rolled a " + diceRoll);
+                diceClick = true;
+                diceClick = false;
+            }
+        });
 
-        f.setSize(600, 600);
-        f.setVisible(true);
+        frame.add(title, BorderLayout.NORTH);
+        frame.add(noticeBoardLbl, BorderLayout.SOUTH);
+        frame.add(rollDiceBtn, BorderLayout.EAST);
+        frame.add(restartBtn, BorderLayout.WEST);
+        frame.add(board, BorderLayout.CENTER);
+
+        frame.setSize(600, 600);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setVisible(true);
     }
 
     int row = 5, col = 6;
@@ -40,17 +58,36 @@ public class UserInterface {
         JPanel p = new JPanel();
         p.setLayout(new GridLayout(row, col));
 
-        int i = 30;
+        int i = 0;
         for (int r = 0; r < row; r++) {
+            if (r == 4) {
+                i = 1;
+            } else if (r == 3) {
+                i = 12;
+            } else if (r == 2) {
+                i = 13;
+            } else if (r == 1) {
+                i = 24;
+            } else if (r == 0) {
+                i = 25;
+            }
             for (int c = 0; c < col; c++) {
-//                System.out.println("Row: " + r + " Col: " + c);
-                Tile tile = new Tile(r, c, matrix);
+                Tile tile = new Tile(r, c, matrix, i);
                 tile.setText(String.valueOf(i));
+                tile.putClientProperty("id", i);
+                if (r % 2 == 0) {
+                    i++;
+                } else {
+                    i--;
+                }
                 p.add(tile);
-                i--;
             }
         }
         return p;
+    }
+
+    public void setNoticeBoardTxt(String text) {
+        noticeBoardLbl.setText(text);
     }
 
     public static class Tile extends JButton {
@@ -59,24 +96,31 @@ public class UserInterface {
         private final int fX;
         private final int fY;
 
-        public Tile(final int x, final int y, final int[][] model) {
+        private final int no;
+
+        public Tile(final int x, final int y, final int[][] model, final int no) {
             fX = x;
             fY = y;
             fModel = model;
 
+            this.no = no;
+
             addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    fModel[fX][fY] = fModel[fX][fY] == 1 ? 0 : 1;
-                    updateNameFromModel();
+                    Object property = getClientProperty("id");
+                    if (property instanceof Integer) {
+                        int objectCounter = ((Integer) property);
+                        // do stuff
+                        System.out.println("Property: " + objectCounter);
+                    }
                 }
             });
-            updateNameFromModel();
         }
 
-        private void updateNameFromModel() {
-            setText(String.valueOf(fModel[fX][fY]));
-        }
+//        private void updateNameFromModel() {
+//            setText(String.valueOf(fModel[fX][fY]));
+//        }
 
     }
 }
