@@ -11,7 +11,7 @@ public class Dice {
         return genRandom(6);
     }
 
-    public static int genRandom(int size) {
+    private static int genRandom(int size) {
         Random ran = new Random();
         int range = size;
         return ran.nextInt(range) + 1;

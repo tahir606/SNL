@@ -7,13 +7,13 @@ import java.awt.event.ActionListener;
 public class UserInterface {
 
     public static int diceRoll = 0;
-    public static boolean diceClick = false;
+    public static boolean diceClick = false, restartClick = false;
 
     private JFrame frame = new JFrame();
 
     private JLabel noticeBoardLbl = new JLabel("Notice Board");
     private JLabel title = new JLabel("Snakes And Ladders");
-    private JButton restartBtn = new JButton("Restart");
+    public JButton restartBtn = new JButton("Restart");
     private JButton rollDiceBtn = new JButton("Roll Dice");
 
     public UserInterface() {
@@ -34,9 +34,15 @@ public class UserInterface {
             @Override
             public void actionPerformed(ActionEvent e) {
                 diceRoll = Dice.rollDice();
-                setNoticeBoardTxt("You rolled a " + diceRoll);
                 diceClick = true;
-                diceClick = false;
+            }
+        });
+
+        //Restart Button
+        restartBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
             }
         });
 
@@ -88,6 +94,10 @@ public class UserInterface {
 
     public void setNoticeBoardTxt(String text) {
         noticeBoardLbl.setText(text);
+    }
+
+    public String getNoticeBoardTxt() {
+        return noticeBoardLbl.getText();
     }
 
     public static class Tile extends JButton {
