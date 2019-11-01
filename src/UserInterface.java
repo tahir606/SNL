@@ -190,6 +190,7 @@ public class UserInterface {
                 }
             }
         }
+        System.out.println("Moving Player to: " + ((JButton) boardPanel.getComponent(index)).getText());
         ((JButton) boardPanel.getComponent(index)).setText(((JButton) boardPanel.getComponent(index)).getText() + " Y ");
     }
 
@@ -249,7 +250,8 @@ public class UserInterface {
                             UserInterface.paceClick = true;
                             ui.removeLabel(1);
                             if (UI.checkForSnakesAndLadders(1)) {
-
+                                System.out.println("Moving Player");
+                                UI.movePlayer();
                             }
                             UI.checkForWin(1);
                         } else {
