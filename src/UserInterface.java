@@ -122,10 +122,11 @@ public class UserInterface {
     }
 
     private boolean checkForSnakesAndLadders(int i) {
-        int score;
-        if (i == 1)
+        int score, beforeScore = 0;
+        if (i == 1) {
             score = Game.playerPosition;
-        else
+            beforeScore = score;
+        } else
             score = Game.computerPosition;
 
         System.out.println("Score: " + score);
@@ -133,11 +134,13 @@ public class UserInterface {
         for (int j = 0; j < 2; j++) {
             //If at ladder start
             if (score == UserInterface.ladderStarts[j]) {
+                System.out.println("At Ladder Start");
                 score = UserInterface.ladderEnds[j];
                 break;
             }
 
             if (score == UserInterface.snakeStarts[j]) {
+                System.out.println("At Snake Start");
                 score = UserInterface.snakeEnds[j];
                 break;
             }
@@ -149,7 +152,7 @@ public class UserInterface {
         else
             Game.computerPosition = score;
         System.out.println("After : " + Game.playerPosition);
-        if (Game.playerPosition < Game.prevPlayerPosition || Game.playerPosition > Game.prevPlayerPosition) {
+        if (Game.playerPosition < beforeScore || Game.playerPosition > beforeScore) {
             System.out.println("After 2: " + score);
             return true;
         } else {
@@ -241,23 +244,25 @@ public class UserInterface {
             addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    Object property = getClientProperty("id");
-                    if (property instanceof Integer) {
-                        int objectCounter = ((Integer) property);
-                        System.out.println(Game.playerPosition);
-                        if (objectCounter == Game.playerPosition) {
-                            setText(getText() + " Y");
-                            UserInterface.paceClick = true;
-                            ui.removeLabel(1);
-                            if (UI.checkForSnakesAndLadders(1)) {
-                                System.out.println("Moving Player");
-                                UI.movePlayer();
+                    if (Game.playerTurn) {
+                        Object property = getClientProperty("id");
+                        if (property instanceof Integer) {
+                            int objectCounter = ((Integer) property);
+                            System.out.println(Game.playerPosition);
+                            if (objectCounter == Game.playerPosition) {
+                                ui.removeLabel(1);
+                                setText(getText() + " Y");
+                                UserInterface.paceClick = true;
+//                                if (UI.checkForSnakesAndLadders(1)) {
+//                                    System.out.println("Moving Player");
+//                                    UI.movePlayer();
+//                                }
+//                                UI.checkForWin(1);
+                            } else {
+                                ui.setNoticeBoardTxt("Please Click the Correct Button");
                             }
-                            UI.checkForWin(1);
-                        } else {
-                            ui.setNoticeBoardTxt("Please Click the Correct Button");
-                        }
 
+                        }
                     }
                 }
             });
