@@ -149,7 +149,7 @@ public class UserInterface {
         else
             Game.computerPosition = score;
         System.out.println("After : " + Game.playerPosition);
-        if (Game.playerPosition < score || Game.playerPosition > score) {
+        if (Game.playerPosition < Game.prevPlayerPosition || Game.playerPosition > Game.prevPlayerPosition) {
             System.out.println("After 2: " + score);
             return true;
         } else {
