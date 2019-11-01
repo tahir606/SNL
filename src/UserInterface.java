@@ -6,8 +6,6 @@ import java.awt.event.ActionListener;
 //A Boundary Class which deals only with the User Interface
 public class UserInterface {
 
-    public volatile static boolean paceClick = false;
-
     private JFrame frame = new JFrame();
     public JPanel boardPanel;
 
@@ -31,6 +29,7 @@ public class UserInterface {
 
         //Notice Board
         noticeBoardLbl.setText("Notifications will be displayed here");
+        noticeBoardLbl.setFont(noticeBoardLbl.getFont().deriveFont(18.0f));
 
         //Center
         JPanel board = createBoard();
@@ -126,8 +125,7 @@ public class UserInterface {
         if (i == 1) {
             score = Game.playerPosition;
             beforeScore = score;
-        } else
-            score = Game.computerPosition;
+        } else score = Game.computerPosition;
 
         System.out.println("Score: " + score);
 
@@ -147,10 +145,8 @@ public class UserInterface {
         }
 
         System.out.println("Before : " + score);
-        if (i == 1)
-            Game.playerPosition = score;
-        else
-            Game.computerPosition = score;
+        if (i == 1) Game.playerPosition = score;
+        else Game.computerPosition = score;
         System.out.println("After : " + Game.playerPosition);
         if (Game.playerPosition < beforeScore || Game.playerPosition > beforeScore) {
             System.out.println("After 2: " + score);
@@ -169,15 +165,10 @@ public class UserInterface {
         }
 
         if (score == 30) {
-            if (i == 1)
-                setNoticeBoardTxt("You Win!");
-            else
-                setNoticeBoardTxt("Computer Wins!");
-        } else {
-            if (i == 1)
-                Game.playerPosition = (Game.prevPlayerPosition != 0 ? Game.prevPlayerPosition : Game.playerPosition);
-            else
-                Game.computerPosition = (Game.prevComputerPosition != 0 ? Game.prevComputerPosition : Game.computerPosition);
+            if (i == 1) setNoticeBoardTxt("You Win!");
+            else setNoticeBoardTxt("Computer Wins!");
+        } else if (score > 30) {
+            Game.playerPosition = Game.prevPlayerPosition;
         }
     }
 
@@ -244,25 +235,23 @@ public class UserInterface {
             addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (Game.playerTurn) {
-                        Object property = getClientProperty("id");
-                        if (property instanceof Integer) {
-                            int objectCounter = ((Integer) property);
-                            System.out.println(Game.playerPosition);
-                            if (objectCounter == Game.playerPosition) {
-                                ui.removeLabel(1);
-                                setText(getText() + " Y");
-                                UserInterface.paceClick = true;
-//                                if (UI.checkForSnakesAndLadders(1)) {
-//                                    System.out.println("Moving Player");
-//                                    UI.movePlayer();
-//                                }
-//                                UI.checkForWin(1);
+                    Object property = getClientProperty("id");
+                    if (property instanceof Integer) {
+                        int objectCounter = ((Integer) property);
+                        System.out.println(Game.playerPosition);
+                        if (objectCounter == Game.playerPosition) {
+                            if (UI.checkForSnakesAndLadders(1)) {
+                                System.out.println("Moving Player");
+                                UI.movePlayer();
                             } else {
-                                ui.setNoticeBoardTxt("Please Click the Correct Button");
+                                if (!getText().contains("Y")) setText(getText() + " Y");
                             }
-
+                            UI.removeLabel(1);
+                            UI.checkForWin(1);
+                        } else {
+                            UI.setNoticeBoardTxt("Please Click the Correct Button");
                         }
+
                     }
                 }
             });

@@ -6,14 +6,11 @@ import java.awt.event.ActionListener;
 //Controller Class
 public class Game {
 
-    public static int playerPosition = 0,
-            computerPosition = 0;
+    public static int playerPosition = 0, computerPosition = 0;
 
-    public static int prevPlayerPosition = 0,
-            prevComputerPosition = 0;
+    public static int prevPlayerPosition = 0, prevComputerPosition = 0;
 
-    public static boolean playerTurn = false,
-            computerTurn = false;
+    public static boolean playerTurn = false, computerTurn = false;
 
     private boolean gameStart = true;
 
@@ -75,14 +72,10 @@ public class Game {
 
     private void playerTurn() {
         prevPlayerPosition = playerPosition;
-        playerPosition = playerPosition + dice;
+        if ((playerPosition + dice) < 30) playerPosition = playerPosition + dice;
         ui.setNoticeBoardTxt("Please Move " + dice + " Paces! Computer's turn! Roll The Dice!");
         playerTurn = false;
         computerTurn = true;
-//        if (checkForSnakesAndLadders(1))
-//            movePlayer();
-//        checkForWin(1);
-//        System.out.println("PP: " + playerPosition);
     }
 
     private void computerTurn() {
@@ -165,7 +158,8 @@ public class Game {
                 }
             }
         }
-        ((JButton) ui.boardPanel.getComponent(index)).setText(((JButton) ui.boardPanel.getComponent(index)).getText() + " C ");
+        if (!((JButton) ui.boardPanel.getComponent(index)).getText().contains("C"))
+            ((JButton) ui.boardPanel.getComponent(index)).setText(((JButton) ui.boardPanel.getComponent(index)).getText() + " C ");
     }
 
     private void movePlayer() {
