@@ -205,6 +205,12 @@ public class UserInterface {
             this.no = no;
             UI = ui;
 
+            if (no % 2 == 0) {
+                setBackground(Color.decode("#ffe0de"));
+            } else {
+                setBackground(Color.decode("#f7ffbd"));
+            }
+
             putClientProperty("id", no);
 
             String lbl = String.valueOf(no);
@@ -247,7 +253,7 @@ public class UserInterface {
                                 if (!getText().contains("Y")) setText(getText() + " Y");
                             }
                             UI.removeLabel(1);
-                            UI.checkForWin(1);
+//                            UI.checkForWin(1);
                         } else {
                             UI.setNoticeBoardTxt("Please Click the Correct Button");
                         }

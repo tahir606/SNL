@@ -80,71 +80,57 @@ public class Game {
 
     private void computerTurn() {
         prevComputerPosition = computerPosition;
-        computerPosition = computerPosition + dice;
+        if ((computerPosition + dice) <= 30) computerPosition = computerPosition + dice;
         ui.setNoticeBoardTxt(ui.getNoticeBoardTxt() + " \n Computer Rolled " + dice + " Paces " + " Your Turn Now!");
-//        checkForSnakesAndLadders(2);
+        checkForSnakesAndLadders();
         moveComputer();
         computerTurn = false;
         playerTurn = true;
-//        checkForWin(2);
+        checkForWin();
     }
 
-//    private boolean checkForSnakesAndLadders(int i) {
-//        int score;
-//        if (i == 1)
-//            score = playerPosition;
-//        else
-//            score = computerPosition;
-//
-//        System.out.println("Score: " + score);
-//
-//        for (int j = 0; j < 2; j++) {
-//            //If at ladder start
-//            if (score == UserInterface.ladderStarts[j]) {
-//                score = UserInterface.ladderEnds[j];
-//                break;
-//            }
-//
-//            if (score == UserInterface.snakeStarts[j]) {
-//                score = UserInterface.snakeEnds[j];
-//                break;
-//            }
-//        }
-//
-//        System.out.println("Before : " + score);
-//        if (i == 1)
-//            playerPosition = score;
-//        else
-//            computerPosition = score;
-//        System.out.println("After : " + playerPosition);
-//        if (playerPosition < score || playerPosition > score) {
+    private void checkForSnakesAndLadders() {
+        int score, beforeScore = 0;
+        score = Game.computerPosition;
+        beforeScore = score;
+
+        System.out.println("Score: " + score);
+
+        for (int j = 0; j < 2; j++) {
+            //If at ladder start
+            if (score == UserInterface.ladderStarts[j]) {
+                ui.setNoticeBoardTxt(ui.getNoticeBoardTxt() + " Computer landed on a Ladder!");
+                score = UserInterface.ladderEnds[j];
+                break;
+            }
+
+            if (score == UserInterface.snakeStarts[j]) {
+                ui.setNoticeBoardTxt(ui.getNoticeBoardTxt() + " Computer landed on a Snake!");
+                score = UserInterface.snakeEnds[j];
+                break;
+            }
+        }
+
+        System.out.println("Before : " + score);
+        Game.computerPosition = score;
+        System.out.println("After : " + Game.computerPosition);
+//        if (Game.playerPosition < beforeScore || Game.playerPosition > beforeScore) {
 //            System.out.println("After 2: " + score);
 //            return true;
 //        } else {
 //            return false;
 //        }
-//    }
-//
-//    private void checkForWin(int i) {
-//        int score;
-//        if (i == 1) {
-//            score = playerPosition;
-//        } else {
-//            score = computerPosition;
-//        }
-//
-//        if (score == 30) {
-//            if (i == 1)
-//                ui.setNoticeBoardTxt("You Win!");
-//            else
-//                ui.setNoticeBoardTxt("Computer Wins!");
-//        } else {
-//            if (i == 1)
-//                playerPosition = (prevPlayerPosition != 0 ? prevPlayerPosition : playerPosition);
-//            else
-//                computerPosition = (prevComputerPosition != 0 ? prevComputerPosition : computerPosition);
-//        }
-//    }
+    }
+
+    private void checkForWin() {
+        int score = computerPosition;
+
+        if (score == 30) {
+            ui.setNoticeBoardTxt("Computer Wins!");
+        } else if (score > 30) {
+            playerPosition = prevComputerPosition;
+        }
+    }
 
     private void moveComputer() {
         Component[] components = ui.boardPanel.getComponents();
